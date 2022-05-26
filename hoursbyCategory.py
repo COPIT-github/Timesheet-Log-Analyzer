@@ -9,23 +9,9 @@ loc = ("./Spring2022 TA Time-edited.xls")
 wb = xlrd.open_workbook(loc)
 
 sheet = wb.sheet_by_index(0)
+
+#to get number of rows in the sheet
 num_rows = sheet.nrows - 1
-
-# print(num_rows)
-# Work Performed #8 column
-# print(sheet.cell_value(2, 8))
-# Hours of Work #9 column
-
-# print(sheet.cell_value(2, 9))
-# print(sheet.cell_value(2, 10))
-
-# print(sheet.row_values(1))
-
-Work_Performed_ALL=sheet.cell_value(2, 8)
-Work_Performed_ALL=re.sub("\d\) ","",Work_Performed_ALL)
-different_categories = Work_Performed_ALL.split(", ")
-# print(different_categories)
-
 
 Work_Hours_each_cat=sheet.cell_value(2, 9)
 Work_Hours_each_cat=re.sub("\d\) ","",Work_Hours_each_cat)
@@ -39,6 +25,7 @@ Work_Hours_each_cat=Work_Hours_each_cat.split(", ")
 #building global dict for each category
 for r in range(1,num_rows): 
     Work_Performed_ALL=sheet.cell_value(r, 8)
+   
     Work_Performed_ALL=re.sub("\d\) ","",Work_Performed_ALL)
     Work_Performed_ALL=re.sub("\d","",Work_Performed_ALL)
     different_categories = Work_Performed_ALL.split(", ")
@@ -60,7 +47,7 @@ for r in range(1,num_rows):
     Work_Performed_ALL=re.sub("\d\) ","",Work_Performed_ALL)
     Work_Performed_ALL=re.sub("\d","",Work_Performed_ALL)
     different_categories = Work_Performed_ALL.split(", ")
-
+    
     for i in different_categories:
         # if i not in local_dict: 
             local_list.append(i)   
@@ -68,8 +55,8 @@ for r in range(1,num_rows):
     print(local_list)        
     workhour_list=[]
     Work_Hours_each_cat=sheet.cell_value(r, 9)
-    Work_Hours_each_cat=re.sub("\d\) ","",Work_Hours_each_cat)
-    Work_Hours_each_cat=re.sub("\d\) ","",Work_Hours_each_cat)
+    Work_Hours_each_cat=re.sub("\d*\) ","",Work_Hours_each_cat)
+   
     Work_Hours_each_cat=Work_Hours_each_cat.split(", ")
     
     for i in Work_Hours_each_cat:
@@ -83,19 +70,52 @@ for r in range(1,num_rows):
         if i not in local_dict_combined: 
             local_dict_combined[i]=0.0   
     
-    r=0
+    check_Total_Course_hours=sheet.cell_value(r, 13)
+    
+    r_local_in_cell=0
     prev=[]
+
+
+
+
+    #debug:
+    LV_check_total=0.0
+
     # prev.append(Work_Hours_each_cat[0])
     for i in local_list:
+
         if(i in prev):
             #activity already seen add up
-            local_dict_combined[i]=float(local_dict_combined[i])+float(workhour_list[r])
+            local_dict_combined[i]=float(local_dict_combined[i])+float(workhour_list[r_local_in_cell])
+            
+            #debug:
+            LV_check_total=LV_check_total+float(workhour_list[r_local_in_cell])
+
+
         else:
             #activity not see add entry
-            local_dict_combined[i]=float(workhour_list[r])
+            local_dict_combined[i]=float(workhour_list[r_local_in_cell])
             prev.append(i)
+
+            #debug:
+            LV_check_total=LV_check_total+float(workhour_list[r_local_in_cell])
+
             
-        r=r+1
+
+
+        r_local_in_cell=r_local_in_cell+1
+
+        #debug:
+        # check for the total hours and local value
+        # 
+
+    if(float(check_Total_Course_hours)!=LV_check_total):
+        print(f'{check_Total_Course_hours} not equal to {LV_check_total}')
+            
+        
+        
+        
+
         
     print(local_dict_combined)
 
