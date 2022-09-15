@@ -55,7 +55,7 @@ for r in range(1,num_rows):
 for r in range(1,num_rows): 
     local_list=[]
     #print row number
-    print(f'rownumber={r}')
+    # print(f'rownumber={r}')
     Work_Performed_ALL=sheet.cell_value(r, 7)
     Work_Performed_ALL=re.sub("\d\) ","",Work_Performed_ALL)
     Work_Performed_ALL=re.sub("\d","",Work_Performed_ALL)
@@ -64,8 +64,12 @@ for r in range(1,num_rows):
     for i in different_categories:
        #add all without removing duplicates 
             local_list.append(i)   
-    print('\n printing local list of each category')
-    print(local_list)
+    
+    #---  /* Debug statements:
+    # print('\n printing local list of each category')
+    # print(local_list)
+
+    # */---------
 
     #implement in new python file to improve code structure  
     # ##Creating output sheet
@@ -91,9 +95,12 @@ for r in range(1,num_rows):
     for i in Work_Hours_each_cat:
             workhour_list.append(i) 
 
-    #prints hours for each row for each work category
+    #Debug statement:
+    # prints hours for each row for each work category
+    #Debug : 
+    # print(workhour_list)
     
-    print(workhour_list)        
+             
     local_dict_combined={}
     
     #considers all the extracted column data in different categories
@@ -122,8 +129,10 @@ for r in range(1,num_rows):
         
         
         if(i in prev):
+            #DEBUG:
             #activity already seen add up
-            print(f'already seen this up')
+            # print(f'already seen this up')
+
             local_dict_combined[i]=float(local_dict_combined[i])+float(workhour_list[r_local_in_cell])
             
             #debug:
@@ -131,9 +140,13 @@ for r in range(1,num_rows):
 
 
         else:
+            
             #activity not see add entry
-            print(f'index={i}')
+            #Debug statement
+            # print(f'index={i}')
             #converting the worklist at each index 
+
+
             local_dict_combined[i]=float(workhour_list[r_local_in_cell])
             #appending the key
             prev.append(i)
@@ -142,7 +155,8 @@ for r in range(1,num_rows):
             LV_check_total=LV_check_total+float(workhour_list[r_local_in_cell])
             # print(LV_check_total)
 
-        print(prev)   
+        # Debug statement
+        # print(prev)   
 
         #adding up the index for workhour_list
         r_local_in_cell=r_local_in_cell+1
@@ -150,11 +164,11 @@ for r in range(1,num_rows):
 
         #debug:
         # check for the total hours and local value
-        # 
-    print(f'here={check_Total_Course_hours}')
-    m=float(check_Total_Course_hours)
-    print(m)
-    print(float(LV_check_total))
+        # print(f'here={check_Total_Course_hours}')
+        # m=float(check_Total_Course_hours)
+        # print(m)
+        # print(float(LV_check_total))
+        
     if(float(check_Total_Course_hours)!=float(LV_check_total)):
         print(f'{check_Total_Course_hours} not equal to {LV_check_total}')
             
