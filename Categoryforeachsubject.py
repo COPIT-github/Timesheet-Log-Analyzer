@@ -7,12 +7,17 @@ import json
 
 
 
+
+#inputs:
+
+inputsheet="./ACTUALSHEET-F-FALL2021.xls"
+
 #all resuable function:
 
 
 def buildFinalDic():
     final_Dict={}
-    loc = ("./ACTUALSHEET-F-FALL2021.xls")
+    loc = (inputsheet)
 
     wb = xlrd.open_workbook(loc)
 
@@ -32,7 +37,7 @@ def buildFinalDic():
             if i not in final_Dict: 
                 final_Dict[i]=0.0
 
-    print(final_Dict)
+    # print(final_Dict)
     return final_Dict
 
 def convertdict_json(dict_input):
@@ -57,21 +62,6 @@ def convertdict_json(dict_input):
          
         
 
-    # print(Reset_dict)
-   
-
-    # index=1
-    # work_per=0
-    # Hours_per=1
-    # for key,value in global_Cat_Dict.items():
-        
-    #     row = sheet1.row(index)
-
-    #     row.write(work_per,key)
-    #     row.write(Hours_per,value)
-    #     index=index+1
-
-    # T=json.dumps(global_Cat_Dict)
     
     row_number=1
     worktype_index_col=1
@@ -121,7 +111,7 @@ def convertdict_json(dict_input):
 
             
 
-    T=json.dumps(dict_input)
+    
 
     
 
@@ -136,7 +126,7 @@ def convertdict_json(dict_input):
  #n-1 row is taken in cell value
 
  #location of file defined below
-loc = ("./ACTUALSHEET-F-FALL2021.xls")
+loc = (inputsheet)
 
 wb = xlrd.open_workbook(loc)
 
