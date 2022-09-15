@@ -212,10 +212,17 @@ def CategorySperator(num_rows,workperformed_row_index,HoursofWork_row_index,tota
         # print(global_Cat_Dict)        
 
 
-
+#all indexs start from zero
 workperformed_row_index=7
+#looks like start from zero index
+#1) Attendance - TAKING, 2) Attendance - TAKING, 3) Answering e-mails
+
 HoursofWork_row_index=9
+# 1) 1.00, 2) 1.00, 3) 0.50
+
 totalApporvedHours_row_index=10
+# 3 -- represents the approved usally lesser number
+
 dataCheck(sheet)
 BuildingDict(num_rows)
 CategorySperator(num_rows,workperformed_row_index,HoursofWork_row_index,totalApporvedHours_row_index)
