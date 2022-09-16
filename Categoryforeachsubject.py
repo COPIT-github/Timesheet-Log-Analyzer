@@ -361,11 +361,3 @@ for subject in all_subjects_dict:
 convertdict_json(all_subjects_dict)
 
 
-
-#         # # print(num_rows)
-#         # # # # T=global_Cat_Dict.items()
-#         # # # print(T)
-#         # # # print(T[0])
-#         # # # print(T[2])
-#         # # # print(T[3])
-#         # # # print(T[10])

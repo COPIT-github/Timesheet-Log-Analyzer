@@ -12,16 +12,19 @@ global_Cat_Dict={}
 
  #location of file defined below
 
-inputsheet="./ACTUALSHEET-F-FALL2021.xls"
-loc = (inputsheet)
 
-wb = xlrd.open_workbook(loc)
 
-sheet = wb.sheet_by_index(0)
 
-#to get number of rows in the sheet
-num_rows = sheet.nrows 
+def openSheet(inputsheet):
+    
+    #inputsheet
+    loc = (inputsheet)
+    wb = xlrd.open_workbook(loc)
+    sheet = wb.sheet_by_index(0)
 
+    #to get number of rows in the sheet
+    num_rows = sheet.nrows 
+    return sheet,num_rows
 
 def dataCheck(sheet):
         
@@ -222,6 +225,13 @@ HoursofWork_row_index=9
 
 totalApporvedHours_row_index=10
 # 3 -- represents the approved usally lesser number
+
+
+inputsheet="./ACTUALSHEET-F-FALL2021.xls"
+
+
+
+sheet,num_rows=openSheet(inputsheet)
 
 dataCheck(sheet)
 BuildingDict(num_rows)
