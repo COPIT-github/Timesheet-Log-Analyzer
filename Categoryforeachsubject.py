@@ -4,7 +4,7 @@ import re
 import xlwt
 import json
 
-from hoursbyCategory import dataCheck
+
 
 #global variables
 all_subjects_dict={}
@@ -97,7 +97,7 @@ def PrintToExcel(dict_input,workperformed_row_index):
         row_number+=1
         #wrting subject name
         row.write(0,subject)
-        print(f'{key}')
+        # print(f'{key}')
 
         #rest dict foe each subject
         final_Dict=Reset_dict.copy()
@@ -108,12 +108,12 @@ def PrintToExcel(dict_input,workperformed_row_index):
             Time=dict_input[key][key2]
             
             final_Dict[work_performed]=Time
-            print(f'{key2} {dict_input[key][key2]}')
+            # print(f'{key2} {dict_input[key][key2]}')
             
             
             
         
-        print( f'\n {subject}: \n {final_Dict} \n')
+        # print( f'\n {subject}: \n {final_Dict} \n')
          
         for key in final_Dict:
             row.write(worktype_index_col,final_Dict[key])
@@ -326,7 +326,7 @@ def CategorySeperator(sheet,num_rows,workperformed_row_index,HoursofWork_row_ind
 
 #inputs:
 
-inputsheet="./ACTUALSHEET-F-FALL2021.xls"
+inputsheet="./FA22TA.xls"
 # inputsheet="./backup-old/ACTUALSHEET-old.xls"
 
 #all indexs start from zero
@@ -342,7 +342,7 @@ totalApporvedHours_row_index=10
 
 
 sheet,num_rows=openSheet(inputsheet)
-dataCheck(sheet)
+# DataCheckup(sheet,HoursofWork_row_index)
 buildAllSubjectsDict(sheet,num_rows)
 CategorySeperator(sheet,num_rows,workperformed_row_index,HoursofWork_row_index,totalApporvedHours_row_index)
 PrintToExcel(all_subjects_dict,workperformed_row_index)
