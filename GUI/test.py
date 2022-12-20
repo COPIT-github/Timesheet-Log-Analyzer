@@ -18,6 +18,22 @@ from TAWorkedPerformed import *
 class Ui_MainWindow(object):
 
 
+    def CompileSheets():
+        
+
+        # TAWork Performed
+        
+        TAWork
+        # sheet,num_rows=openSheet(inputsheet)
+
+        # dataCheck(sheet)
+        # BuildingDict(num_rows)
+        # CategorySperator(num_rows,workperformed_row_index,HoursofWork_row_index,totalApporvedHours_row_index)
+        # print(global_Cat_Dict)        
+        # CreatingOutputSheet()
+
+
+
     def upload(self):
         fullPath = QFileDialog.getOpenFileName(self.centralwidget,"Open File", "../", "All Files (*)")
         # fname = QFileDialog.getOpenFileName(self, "Open File", "./test_images/", "All Files (*)")
@@ -26,9 +42,9 @@ class Ui_MainWindow(object):
         self.filepath=fullPath[0]
         # open image
         print(self.filepath)
-        setupInputSheet(self.filepath)
-        dataCheck()
 
+        self.CompileSheets()
+     
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1005, 713)
