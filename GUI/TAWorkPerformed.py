@@ -15,7 +15,7 @@ global_Cat_Dict={}
 
 class TAworksheet(self):
 
-        def openSheet(inputsheet):
+        def openSheet(self,inputsheet):
             
             #inputsheet
             loc = (inputsheet)
@@ -26,7 +26,7 @@ class TAworksheet(self):
             num_rows = sheet.nrows 
             return sheet,num_rows
 
-        def dataCheck(sheet):
+        def dataCheck(self,sheet):
                 
             #place hours work cloumn un cellvalue(m,n ) in n places and check
 
@@ -227,10 +227,10 @@ class TAworksheet(self):
         # 3 -- represents the approved usally lesser number
 
 
-        inputsheet=""
+      
 
-        def setupInputSheet(filepath):
-            inputsheet=filepath
+        def setupInputSheet(self,filepath):
+            self.inputsheet=filepath
 
 
 # sheet,num_rows=openSheet(inputsheet)
