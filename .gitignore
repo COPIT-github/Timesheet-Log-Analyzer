@@ -1,8 +1,7 @@
 .DS_Store
 TA work Performed.xls
-backup-old/ACTUALSHEET-old.xls
-backup-old/TA work Performed.xls
 Submissions/*
-*.xls
 dist
 build
+app.spec
+Excel Sheets
