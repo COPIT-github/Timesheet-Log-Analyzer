@@ -1,0 +1,10 @@
+Command to compile new UI
+
+python3 -m PyQt5.uic.pyuic filename.ui -o outputfilename.py
+
+Packaging the code
+
+inside GUI folder
+
+Python app.py
+
