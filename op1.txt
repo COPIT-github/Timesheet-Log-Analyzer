@@ -1,8 +1,0 @@
-['']
-rownumber=1
-1) 0.00
-index=No Activity
-['']
-rownumber=1
-1) 0.50, 2) 1.50, 3) 1.00, 4) 1.00, 5) 0.50
-index=Lecture
