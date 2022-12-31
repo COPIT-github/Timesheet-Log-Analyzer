@@ -22,22 +22,22 @@ global_Cat_Dict={}
 
 class TAWorkPerformed():
     
-    def openSheet(self,inputsheet):
+    def openSheet(self):
         
         #inputsheet
-        loc = (inputsheet)
-        wb = xlrd.open_workbook(loc)
-        sheet = wb.sheet_by_index(0)
+        loc = (self.inputsheet)
+        self.wb = xlrd.open_workbook(loc)
+        self.sheet = self.wb.sheet_by_index(0)
 
         #to get number of rows in the sheet
-        num_rows = sheet.nrows 
-        return sheet,num_rows
+        self.sheet.num_rows = self.sheet.nrows 
+        return self.sheet,self.sheet.num_rows
 
-    def dataCheck(self,sheet):
+    def dataCheck(self):
             
         #place hours work cloumn un cellvalue(m,n ) in n places and check
 
-        Work_Hours_each_cat=sheet.cell_value(2, 9)
+        Work_Hours_each_cat=self.sheet.cell_value(2, 9)
 
         Work_Hours_each_cat=re.sub("\d\) ","",Work_Hours_each_cat)
         Work_Hours_each_cat=re.sub("\d\) ","",Work_Hours_each_cat)
@@ -255,11 +255,13 @@ class Ui_MainWindow(object):
         # TAWork Performed
         TWP=TAWorkPerformed()
         TWP.setupInputSheet(self.filepath)
-        
+        self.sheet,self.sheet.num_rows=TWP.openSheet()
+        print(self.sheet,self.sheet.num_rows)
+       
         
      
 
-        # dataCheck(sheet)
+        TWP.dataCheck()
         # BuildingDict(num_rows)
         # CategorySperator(num_rows,workperformed_row_index,HoursofWork_row_index,totalApporvedHours_row_index)
         # print(global_Cat_Dict)        
@@ -268,12 +270,14 @@ class Ui_MainWindow(object):
 
 
     def upload(self):
+        
         fullPath = QFileDialog.getOpenFileName(self.centralwidget,"Open File", "../", "All Files (*)")
         # fname = QFileDialog.getOpenFileName(self, "Open File", "./test_images/", "All Files (*)")
-        # object name is stored in pixmap1
-        # self.pixmap1=QPixmap(fullPath[0]) 
+      
         self.filepath=fullPath[0]
-        # open image
+        
+        #file path input is done here
+
         print(self.filepath)
 
         self.CompileSheets()
