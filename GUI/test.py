@@ -25,7 +25,7 @@ class TAWorkPerformed():
     def openSheet(self):
         
         #inputsheet
-        loc = (self.inputsheet)
+        loc = (self.filepath)
         self.wb = xlrd.open_workbook(loc)
         self.sheet = self.wb.sheet_by_index(0)
 
@@ -50,7 +50,7 @@ class TAWorkPerformed():
 
 
 
-    def CreatingOutputSheet():
+    def CreatingOutputSheet(self):
         ##Creating output sheet
         newsheet=xlwt.Workbook()
         sheet1 = newsheet.add_sheet("TA work Performed Final")
@@ -76,10 +76,10 @@ class TAWorkPerformed():
         newsheet.save("TA work Performed.xls")
         
 
-    def BuildingDict(num_rows):
+    def BuildingDict(self):
     #building global dict for each category
-        for r in range(1,num_rows): 
-            Work_Performed_ALL=sheet.cell_value(r, 7)
+        for r in range(1,self.sheet.num_rows): 
+            Work_Performed_ALL=self.sheet.cell_value(r, 7)
         
             Work_Performed_ALL=re.sub("\d\) ","",Work_Performed_ALL)
             Work_Performed_ALL=re.sub("\d","",Work_Performed_ALL)
@@ -98,15 +98,20 @@ class TAWorkPerformed():
     # print(len(global_Cat_Dict))
 
 
-    def CategorySperator(num_rows,workperformed_row_index,HoursofWork_row_index,totalApporvedHours_row_index):
+    def CategorySperator(self):
     #Builds list for each category using a List
     ## :: prints row number extracts the workperformed category for each row
     ## :: create a unquie hash map for each row
-        for r in range(1,num_rows): 
+
+        for r in range(1,self.sheet.num_rows): 
             local_list=[]
             #print row number
             # print(f'rownumber={r}')
-            Work_Performed_ALL=sheet.cell_value(r, workperformed_row_index)
+            workperformed_row_index=self.sheet.workperformed_row_index
+            HoursofWork_row_index=self.sheet.HoursofWork_row_index
+            totalApporvedHours_row_index=self.sheet.totalApporvedHours_row_index
+
+            Work_Performed_ALL=self.sheet.cell_value(r, workperformed_row_index)
             Work_Performed_ALL=re.sub("\d\) ","",Work_Performed_ALL)
             Work_Performed_ALL=re.sub("\d","",Work_Performed_ALL)
             different_categories = Work_Performed_ALL.split(", ")
@@ -124,7 +129,7 @@ class TAWorkPerformed():
             workhour_list=[]
             #row looks like 1) 1.00, 2) 1.00, 3) 0.50
             #removes all the indexs from the work row but those are they key for us to add up the data attendance taking, attendance taking
-            Work_Hours_each_cat=sheet.cell_value(r, HoursofWork_row_index)
+            Work_Hours_each_cat=self.sheet.cell_value(r, HoursofWork_row_index)
             Work_Hours_each_cat=re.sub("\d*\) ","",Work_Hours_each_cat)
         
             Work_Hours_each_cat=Work_Hours_each_cat.split(", ")
@@ -147,7 +152,7 @@ class TAWorkPerformed():
                     local_dict_combined[i]=0.0   
 
             
-            check_Total_Course_hours=sheet.cell_value(r, totalApporvedHours_row_index)
+            check_Total_Course_hours=self.sheet.cell_value(r, totalApporvedHours_row_index)
             # print(check_Total_Course_hours)
             
             r_local_in_cell=0
@@ -228,18 +233,11 @@ class TAWorkPerformed():
 
 
     def setupInputSheet(self,filepath):
-        self.inputsheet=filepath
-        print(self.inputsheet)
-            #all indexs start from zero
-        workperformed_row_index=7
-        #looks like start from zero index
-        #1) Attendance - TAKING, 2) Attendance - TAKING, 3) Answering e-mails
+        self.filepath=filepath
+        
 
-        HoursofWork_row_index=9
-        # 1) 1.00, 2) 1.00, 3) 0.50
-
-        totalApporvedHours_row_index=10
-        # 3 -- represents the approved usally lesser number
+        print(self.filepath)
+         
 
 
 
@@ -256,16 +254,29 @@ class Ui_MainWindow(object):
         TWP=TAWorkPerformed()
         TWP.setupInputSheet(self.filepath)
         self.sheet,self.sheet.num_rows=TWP.openSheet()
+           #all indexs start from zero
+        self.sheet.workperformed_row_index=7
+        #looks like start from zero index
+        #1) Attendance - TAKING, 2) Attendance - TAKING, 3) Answering e-mails
+
+        self.sheet.HoursofWork_row_index=9
+        # 1) 1.00, 2) 1.00, 3) 0.50
+
+        self.sheet.totalApporvedHours_row_index=10
+        # 3 -- represents the approved usally lesser number
         print(self.sheet,self.sheet.num_rows)
        
         
      
 
         TWP.dataCheck()
-        # BuildingDict(num_rows)
-        # CategorySperator(num_rows,workperformed_row_index,HoursofWork_row_index,totalApporvedHours_row_index)
+        TWP.BuildingDict()
+      
+        
+        TWP.CategorySperator()
+    
         # print(global_Cat_Dict)        
-        # CreatingOutputSheet()
+   
 
 
 
@@ -281,6 +292,14 @@ class Ui_MainWindow(object):
         print(self.filepath)
 
         self.CompileSheets()
+
+
+    def submit(self):
+        
+        TWP=TAWorkPerformed()
+        TWP.CreatingOutputSheet()
+             # CreatingOutputSheet()
+
      
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -329,7 +348,7 @@ class Ui_MainWindow(object):
         self.pushButton = QtWidgets.QPushButton(self.centralwidget,clicked=lambda: self.upload())
         self.pushButton.setGeometry(QtCore.QRect(140, 290, 161, 32))
         self.pushButton.setObjectName("pushButton")
-        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget,clicked=lambda: self.submit())
         self.pushButton_2.setGeometry(QtCore.QRect(430, 300, 161, 32))
         self.pushButton_2.setObjectName("pushButton_2")
         self.lineEdit_2 = QtWidgets.QLineEdit(self.centralwidget)
