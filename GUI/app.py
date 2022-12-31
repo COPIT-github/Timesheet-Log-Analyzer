@@ -625,7 +625,7 @@ class Ui_MainWindow(object):
       
         self.filepath=fullPath[0]
 
-        
+      
         #file path input is done here
 
         print(self.filepath)
