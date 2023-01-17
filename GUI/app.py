@@ -16,15 +16,17 @@ import json
 
 global_Cat_Dict={} 
 all_subjects_dict={}
-
+TA_names={}
+Debug=False
+UserDebug=False
 
 
 class TAWorkPerformed():
     
-    def openSheet(self):
+    def openSheet(self,inputsheet):
         
         #inputsheet
-        loc = (self.filepath)
+        loc = (inputsheet)
         self.wb = xlrd.open_workbook(loc)
         self.sheet = self.wb.sheet_by_index(0)
 
@@ -42,7 +44,9 @@ class TAWorkPerformed():
         Work_Hours_each_cat=re.sub("\d\) ","",Work_Hours_each_cat)
 
         Work_Hours_each_cat=Work_Hours_each_cat.split(", ")
-        print(f'check whether taken input is of right column \n"{Work_Hours_each_cat}\n ====== \n')
+        
+        if Debug==True:
+            print(f'check whether taken input is of right column \n"{Work_Hours_each_cat}\n ====== \n')
 
 
 
@@ -105,7 +109,9 @@ class TAWorkPerformed():
         for r in range(1,self.sheet.num_rows): 
             local_list=[]
             #print row number
-            print(f'rownumber={r+1}')
+            
+            if UserDebug==True:
+                print(f'rownumber={r+1}')   
             workperformed_row_index=self.sheet.workperformed_row_index
             HoursofWork_row_index=self.sheet.HoursofWork_row_index
             totalApporvedHours_row_index=self.sheet.totalApporvedHours_row_index
@@ -269,7 +275,7 @@ class CategoryForEachSubject():
         #to get number of rows in the sheet
         num_rows = self.sheet.nrows 
         workperformed_row_index=self.sheet.workperformed_row_index
-        print(workperformed_row_index)
+      
         for r in range(1,num_rows): 
             Work_Performed_ALL=self.sheet.cell_value(r, workperformed_row_index)
         
@@ -363,7 +369,9 @@ class CategoryForEachSubject():
         Work_Hours_each_cat=re.sub("\d\) ","",Work_Hours_each_cat)
 
         Work_Hours_each_cat=Work_Hours_each_cat.split(", ")
-        print(f'check whether taken input is of right column \n"{Work_Hours_each_cat}\n ====== \n')
+
+        if Debug is True:
+            print(f'check whether taken input is of right column \n"{Work_Hours_each_cat}\n ====== \n')
 
     ##---------------Data checkup ends------------------
 
@@ -554,6 +562,37 @@ class CategoryForEachSubject():
 
 
 
+class TATotalHours():
+    def openSheet(self,inputsheet):
+    
+        loc = (inputsheet)
+
+        wb = xlrd.open_workbook(loc)
+
+        self.sheet = wb.sheet_by_index(0)
+
+
+
+        #to get number of rows in the sheet
+        self.sheet.num_rows = self.sheet.nrows 
+        return self.sheet,self.sheet.num_rows
+
+    def buildTaDict(self):
+        
+        print("TAName=",self.sheet.Ta_Name)
+     
+    
+        
+        
+        # return final_Dict
+
+
+
+
+
+
+
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -647,63 +686,84 @@ class Ui_MainWindow(object):
 
 
 
+
+    def IntitializeColumns(self):
+
+        self.sheet.workperformed_row_index=int(self.lineEdit_4.text())-1
+        
+        #looks like start from zero index
+        #1) Attendance - TAKING, 2) Attendance - TAKING, 3) Answering e-mails
+
+        self.sheet.HoursofWork_row_index=int(self.lineEdit_5.text())-1
+        # 1) 1.00, 2) 1.00, 3) 0.50
+
+        self.sheet.totalApporvedHours_row_index=int(self.lineEdit_8.text())-1
+       
+        self.sheet.course_name_index=int(self.lineEdit.text())-1
+
+       
+
+        #Course Name
+        self.sheet.Course= int(self.lineEdit_3.text())-1
+
+        #TA name
+        self.sheet.Ta_Name= int(self.lineEdit_2.text())-1
+
+
+        
     def CompileSheets(self):
         
 
         # TAWork Performed
         TWP=TAWorkPerformed()
-        TWP.setupInputSheet(self.filepath)
-        self.sheet,self.sheet.num_rows=TWP.openSheet()
-           #all indexs start from zero
-        self.sheet.workperformed_row_index=int(self.lineEdit_4.text())-1
+        # TWP.setupInputSheet(self.filepath)
+        self.sheet,self.sheet.num_rows=TWP.openSheet(self.filepath)
+        self.IntitializeColumns()
+
+        if UserDebug is True: 
+            print(self.sheet,self.sheet.num_rows)
         
-        #looks like start from zero index
-        #1) Attendance - TAKING, 2) Attendance - TAKING, 3) Answering e-mails
-
-        self.sheet.HoursofWork_row_index=int(self.lineEdit_5.text())-1
-        # 1) 1.00, 2) 1.00, 3) 0.50
-
-        self.sheet.totalApporvedHours_row_index=int(self.lineEdit_8.text())-1
-        # 3 -- represents the approved usally lesser number
-        print(self.sheet,self.sheet.num_rows)
-       
-        
-     
-
         TWP.dataCheck()
         TWP.BuildingDict()
-      
-        
         TWP.CategorySperator()
+
+     
+
+       
+        
+        # Creating instance again it will lose all its inherent properties
+        # Catefory for Each Subject Sheet generation
         CFES=CategoryForEachSubject()
         self.sheet,self.sheet.num_rows=CFES.openSheet(self.filepath)
+        if UserDebug is True: 
+            print(self.sheet,self.sheet.num_rows)
 
-        print(self.sheet,self.sheet.num_rows)
-
-        self.sheet.workperformed_row_index=int(self.lineEdit_4.text())-1
-        
-        #looks like start from zero index
-        #1) Attendance - TAKING, 2) Attendance - TAKING, 3) Answering e-mails
-
-        self.sheet.HoursofWork_row_index=int(self.lineEdit_5.text())-1
-        # 1) 1.00, 2) 1.00, 3) 0.50
-
-        self.sheet.totalApporvedHours_row_index=int(self.lineEdit_8.text())-1
-       
-        #looks like start from zero index
-        #1) Attendance - TAKING, 2) Attendance - TAKING, 3) Answering e-mails
-
-      
-        # 1) 1.00, 2) 1.00, 3) 0.50
-
-        
-
-        self.sheet.course_name_index=int(self.lineEdit.text())-1
+        self.IntitializeColumns()
         CFES.DataCheckup()
         CFES.buildAllSubjectsDict()
         CFES.CategorySeperator()
+     
+
+       
+
         
-        print(all_subjects_dict)
+
+
+        # Creating instance again it will lose all its inherent properties
+        # Catefory for Each Subject Sheet generation
+        TTS= TATotalHours()
+        self.sheet,self.sheet.num_rows=TTS.openSheet(self.filepath)
+
+        #intialize cloumns()
+
+         # TA name
+      
+        self.IntitializeColumns()
+        # TTS.buildTaDict()
+
+      
+        
+        
 
 
 
