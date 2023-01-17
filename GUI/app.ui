@@ -240,12 +240,12 @@
      <rect>
       <x>290</x>
       <y>180</y>
-      <width>101</width>
+      <width>121</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>Course Name</string>
+     <string>Coordinator Name</string>
     </property>
    </widget>
   </widget>

@@ -18,7 +18,7 @@ global_Cat_Dict={}
 all_subjects_dict={}
 TA_names={}
 Debug=False
-UserDebug=False
+UserDebug=True
 
 
 class TAWorkPerformed():
@@ -579,15 +579,14 @@ class TATotalHours():
 
     def buildTaDict(self):
         
-        print("TAName=",self.sheet.Ta_Name)
-     
+        if Debug is True:
+            print("TAName=",self.sheet.Ta_Name)
+            print("CoureName=",self.sheet.CCName)
+        
     
         
         
         # return final_Dict
-
-
-
 
 
 
@@ -651,7 +650,7 @@ class Ui_MainWindow(object):
         self.label_3.setGeometry(QtCore.QRect(30, 180, 60, 16))
         self.label_3.setObjectName("label_3")
         self.label_6 = QtWidgets.QLabel(self.centralwidget)
-        self.label_6.setGeometry(QtCore.QRect(290, 180, 101, 16))
+        self.label_6.setGeometry(QtCore.QRect(290, 180, 121, 16))
         self.label_6.setObjectName("label_6")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -681,11 +680,7 @@ class Ui_MainWindow(object):
         self.lineEdit_2.setText(_translate("MainWindow", "1"))
         self.lineEdit_3.setText(_translate("MainWindow", "6"))
         self.label_3.setText(_translate("MainWindow", "Name"))
-        self.label_6.setText(_translate("MainWindow", "Course Name"))
-
-
-
-
+        self.label_6.setText(_translate("MainWindow", "Coordinator Name"))
 
     def IntitializeColumns(self):
 
@@ -703,8 +698,8 @@ class Ui_MainWindow(object):
 
        
 
-        #Course Name
-        self.sheet.Course= int(self.lineEdit_3.text())-1
+        #Course Coordinator Name
+        self.sheet.CCName= int(self.lineEdit_3.text())-1
 
         #TA name
         self.sheet.Ta_Name= int(self.lineEdit_2.text())-1
@@ -759,7 +754,7 @@ class Ui_MainWindow(object):
          # TA name
       
         self.IntitializeColumns()
-        # TTS.buildTaDict()
+        TTS.buildTaDict()
 
       
         
@@ -780,7 +775,7 @@ class Ui_MainWindow(object):
         print(self.filepath)
         print("\n Current Column Setup")
 
-        print(self.lineEdit.text(),self.lineEdit_4.text(),self.lineEdit_5.text(),self.lineEdit_8.text())
+        print(self.lineEdit.text(),self.lineEdit_4.text(),self.lineEdit_5.text(),self.lineEdit_8.text(),self.lineEdit_2.text(),self.lineEdit_3.text())
 
         self.label_11.setText(self.filepath)
 
@@ -790,8 +785,8 @@ class Ui_MainWindow(object):
 
     def submit(self):
         
-
-        print(self.lineEdit.text(),self.lineEdit_4.text(),self.lineEdit_5.text(),self.lineEdit_8.text())
+        print("Submit Setup:")
+        print(self.lineEdit.text(),self.lineEdit_4.text(),self.lineEdit_5.text(),self.lineEdit_8.text(),self.lineEdit_2.text(),self.lineEdit_3.text())
 
         self.CompileSheets()
 
