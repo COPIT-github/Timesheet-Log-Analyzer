@@ -583,10 +583,72 @@ class TATotalHours():
             print("TAName=",self.sheet.Ta_Name)
             print("CoureName=",self.sheet.CCName)
         
-    
-        
+
+        for r in range(1,self.sheet.num_rows): 
+            TA_name=self.sheet.cell_value(r, self.sheet.Ta_Name)
+            TA_name=TA_name.lower()
+
+
+            if TA_name not in TA_names:
+                TA_names[TA_name]=0
+            
+        # print(TA_names)
         
         # return final_Dict
+
+    def CourseHours(self):
+
+       
+        for r in range(1,self.sheet.num_rows): 
+            
+            TA_name=self.sheet.cell_value(r, self.sheet.Ta_Name)
+            TA_name=TA_name.lower()
+            course_hours=self.sheet.cell_value(r,self.sheet.totalApporvedHours_row_index)
+            course_hours=float(course_hours)
+            
+            TA_names[TA_name]+=course_hours
+
+            TA_names[TA_name]=round(TA_names[TA_name],2)
+
+        
+        if Debug is True:
+            print(TA_names)
+
+
+
+
+
+    def PrintToExcel(self):
+        
+
+        # ##Creating output sheet
+        newsheet=xlwt.Workbook()
+        sheet1 = newsheet.add_sheet("TA User Total Hours")
+        # cols=['Subject','Hours']
+        
+
+        row = sheet1.row(0)
+        row.write(0,'Name')
+        row.write(1,'Total Hours')
+        Name_col=0
+        Hours_col=1
+        Row_number=1
+
+        Sorted_TA_Names = list(TA_names.keys())
+        Sorted_TA_Names.sort()
+        Sorted_TA_Names_dict = {i: TA_names[i] for i in Sorted_TA_Names}
+
+
+        for TAName in Sorted_TA_Names_dict:
+            row = sheet1.row(Row_number)
+            row.write(Name_col,TAName.capitalize())
+            row.write(Hours_col,TA_names[TAName])
+            Row_number+=1
+
+    
+        
+
+        newsheet.save("TA User TotalHours.xls") 
 
 
 
@@ -722,10 +784,7 @@ class Ui_MainWindow(object):
         TWP.BuildingDict()
         TWP.CategorySperator()
 
-     
 
-       
-        
         # Creating instance again it will lose all its inherent properties
         # Catefory for Each Subject Sheet generation
         CFES=CategoryForEachSubject()
@@ -741,9 +800,6 @@ class Ui_MainWindow(object):
 
        
 
-        
-
-
         # Creating instance again it will lose all its inherent properties
         # Catefory for Each Subject Sheet generation
         TTS= TATotalHours()
@@ -755,9 +811,16 @@ class Ui_MainWindow(object):
       
         self.IntitializeColumns()
         TTS.buildTaDict()
+        TTS.CourseHours()
 
       
         
+        
+     
+
+       
+        
+
         
 
 
@@ -819,6 +882,12 @@ class Ui_MainWindow(object):
         self.sheet.course_name_index=int(self.lineEdit.text())-1
 
         CFES.PrintToExcel()
+
+        TTS= TATotalHours()
+        TTS.PrintToExcel()
+
+
+        
         
              # CreatingOutputSheet()
 
