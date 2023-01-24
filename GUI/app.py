@@ -17,8 +17,9 @@ import json
 global_Cat_Dict={} 
 all_subjects_dict={}
 TA_names={}
+FinalCourses={}
 Debug=False
-UserDebug=True
+UserDebug=False
 
 
 class TAWorkPerformed():
@@ -650,6 +651,103 @@ class TATotalHours():
 
         newsheet.save("TA User TotalHours.xls") 
 
+# TO DO: Final CourseHours
+class FinalCourseHours():
+
+
+    def openSheet(self,inputsheet):
+    
+        loc = (inputsheet)
+
+        wb = xlrd.open_workbook(loc)
+
+        self.sheet = wb.sheet_by_index(0)
+
+
+
+        #to get number of rows in the sheet
+        self.sheet.num_rows = self.sheet.nrows 
+        return self.sheet,self.sheet.num_rows
+
+    def buildFinalCoursesDict(self):
+        '''takes taname column and '''
+
+        if Debug is True:
+            print("CoureNameCol=",self.sheet.course_name_index)
+            
+        
+
+        for r in range(1,self.sheet.num_rows): 
+            CourseName=self.sheet.cell_value(r, self.sheet.course_name_index)
+            CourseName=CourseName.lower()
+
+
+            if CourseName not in FinalCourses:
+                FinalCourses[CourseName]=0
+            
+        print(FinalCourses)  
+        print(len(FinalCourses))  
+        
+        # return final_Dict
+
+    def ComputeCourseHours(self):
+
+       
+        for r in range(1,self.sheet.num_rows): 
+            
+            CourseName=self.sheet.cell_value(r, self.sheet.course_name_index)
+            CourseName=CourseName.lower()
+            course_hours=self.sheet.cell_value(r,self.sheet.totalApporvedHours_row_index)
+            course_hours=float(course_hours)
+            
+            FinalCourses[CourseName]+=course_hours
+
+            FinalCourses[CourseName]=round(FinalCourses[CourseName],2)
+
+        
+        if Debug is True:
+            print(CourseName)
+
+        print(FinalCourses)    
+
+         
+
+
+
+
+
+    def PrintToExcel(self):
+        
+
+        # ##Creating output sheet
+        newsheet=xlwt.Workbook()
+        sheet1 = newsheet.add_sheet("Final Course Hours")
+        # cols=['Subject','Hours']
+        
+
+        row = sheet1.row(0)
+        row.write(0,'Course Name')
+        row.write(1,'Total Course Hours')
+        CourseName_colno=0
+        TotalCourseHours_colno=1
+        Row_number=1
+
+        Sorted_FinalCourses = list(FinalCourses.keys())
+        Sorted_FinalCourses.sort()
+        Sorted_FinalCourses_dict = {i: FinalCourses[i] for i in Sorted_FinalCourses}
+
+
+        for CourseName in Sorted_FinalCourses_dict:
+            row = sheet1.row(Row_number)
+            row.write(CourseName_colno,CourseName.capitalize())
+            row.write(TotalCourseHours_colno,FinalCourses[CourseName])
+            Row_number+=1
+
+    
+        
+
+        newsheet.save("Final Course Hours.xls") 
+
 
 
 
@@ -813,6 +911,13 @@ class Ui_MainWindow(object):
         TTS.buildTaDict()
         TTS.CourseHours()
 
+        FCH=FinalCourseHours()
+        self.sheet,self.sheet.num_rows=FCH.openSheet(self.filepath)
+        self.IntitializeColumns()
+        FCH.buildFinalCoursesDict()
+        FCH.ComputeCourseHours()
+
+
       
         
         
@@ -885,6 +990,9 @@ class Ui_MainWindow(object):
 
         TTS= TATotalHours()
         TTS.PrintToExcel()
+
+        FCH= FinalCourseHours()
+        FCH.PrintToExcel()
 
 
         
