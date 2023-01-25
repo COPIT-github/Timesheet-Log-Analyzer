@@ -687,9 +687,10 @@ class FinalCourseHours():
 
             if CourseName not in FinalCourses:
                 FinalCourses[CourseName]=0
-            
-        print(FinalCourses)  
-        print(len(FinalCourses))  
+
+        if Debug is True:    
+            print(FinalCourses)  
+            print(len(FinalCourses))  
         
         # return final_Dict
 
@@ -790,8 +791,8 @@ class CoordinatorCourseHours():
                 CoordinatorCourseHours_dict[CourseName][Coordinator_name.lower()]=0
 
           
-            
-        print(CoordinatorCourseHours_dict)  
+        if Debug is True:    
+            print(CoordinatorCourseHours_dict)  
 
 
     def ComputeCourseHours(self):
@@ -808,8 +809,10 @@ class CoordinatorCourseHours():
             CoordinatorCourseHours_dict[CourseName][Coordinator_name]+=course_hours
 
             CoordinatorCourseHours_dict[CourseName][Coordinator_name]=round(CoordinatorCourseHours_dict[CourseName][Coordinator_name],2)
-           
-        print(CoordinatorCourseHours_dict)    
+
+        if Debug is True:   
+            print(CoordinatorCourseHours_dict)    
+
      
 
     def PrintToExcel(self):
@@ -1114,6 +1117,7 @@ class Ui_MainWindow(object):
         CCH=CoordinatorCourseHours()
         CCH.PrintToExcel()
 
+        print("All Sheets Generated")
         
 
         
