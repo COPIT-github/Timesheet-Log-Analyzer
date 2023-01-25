@@ -18,6 +18,9 @@ global_Cat_Dict={}
 all_subjects_dict={}
 TA_names={}
 FinalCourses={}
+CoordinatorCourseHours_dict={}
+
+
 Debug=False
 UserDebug=False
 
@@ -651,7 +654,7 @@ class TATotalHours():
 
         newsheet.save("TA User TotalHours.xls") 
 
-# TO DO: Final CourseHours
+
 class FinalCourseHours():
 
 
@@ -706,9 +709,9 @@ class FinalCourseHours():
 
         
         if Debug is True:
-            print(CourseName)
+            print(FinalCourses) 
 
-        print(FinalCourses)    
+           
 
          
 
@@ -749,7 +752,113 @@ class FinalCourseHours():
         newsheet.save("Final Course Hours.xls") 
 
 
+class CoordinatorCourseHours():
 
+
+    def openSheet(self,inputsheet):
+    
+        loc = (inputsheet)
+
+        wb = xlrd.open_workbook(loc)
+
+        self.sheet = wb.sheet_by_index(0)
+
+
+
+        #to get number of rows in the sheet
+        self.sheet.num_rows = self.sheet.nrows 
+        return self.sheet,self.sheet.num_rows
+
+    def buildCoordinatorCourseHoursDict(self):
+        '''takes taname column and '''
+
+        if Debug is True:
+            print("CoureNameCol=",self.sheet.course_name_index)
+            
+        for coursename in FinalCourses:
+            
+
+            CoordinatorCourseHours_dict[coursename]={}
+            
+
+        for r in range(1,self.sheet.num_rows): 
+            CourseName=self.sheet.cell_value(r, self.sheet.course_name_index)
+            CourseName=CourseName.lower()
+            Coordinator_name= self.sheet.cell_value(r,self.sheet.CCName)
+
+            if Coordinator_name not in CoordinatorCourseHours_dict[CourseName]:
+                CoordinatorCourseHours_dict[CourseName][Coordinator_name.lower()]=0
+
+          
+            
+        print(CoordinatorCourseHours_dict)  
+
+
+    def ComputeCourseHours(self):
+
+        
+        for r in range(1,self.sheet.num_rows): 
+            CourseName=self.sheet.cell_value(r, self.sheet.course_name_index)
+            CourseName=CourseName.lower()
+            Coordinator_name= self.sheet.cell_value(r,self.sheet.CCName)
+            Coordinator_name=Coordinator_name.lower()
+            course_hours=self.sheet.cell_value(r,self.sheet.totalApporvedHours_row_index)
+            course_hours=float(course_hours)
+            
+            CoordinatorCourseHours_dict[CourseName][Coordinator_name]+=course_hours
+
+            CoordinatorCourseHours_dict[CourseName][Coordinator_name]=round(CoordinatorCourseHours_dict[CourseName][Coordinator_name],2)
+           
+        print(CoordinatorCourseHours_dict)    
+     
+
+    def PrintToExcel(self):
+        
+
+        # ##Creating output sheet
+        newsheet=xlwt.Workbook()
+        sheet1 = newsheet.add_sheet("Cordinator Course Hours")
+        # cols=['Subject','Hours']
+        
+
+        row = sheet1.row(0)
+        row.write(0,'Course Name')
+        row.write(1,'Hours')
+        CourseName_colno=0
+        CoordinatorName_colno=0
+        TotalCourseHours_colno=1
+        Row_number=1
+
+        Sorted_CoordinatorCourseHours_dict = list(CoordinatorCourseHours_dict.keys())
+        Sorted_CoordinatorCourseHours_dict.sort()
+        Sorted_CoordinatorCourseHours_dict = {i: CoordinatorCourseHours_dict[i] for i in Sorted_CoordinatorCourseHours_dict}
+
+
+        for CourseName in Sorted_CoordinatorCourseHours_dict:
+            row = sheet1.row(Row_number)
+            row.write(CourseName_colno,CourseName.capitalize())
+            row.write(TotalCourseHours_colno,FinalCourses[CourseName])
+            Row_number+=1
+            # Coordinator hours:
+            for Coordinatorname in Sorted_CoordinatorCourseHours_dict[CourseName]:
+                
+                row = sheet1.row(Row_number)
+        
+                row.write(CoordinatorName_colno,Coordinatorname.capitalize())
+                
+                row.write(TotalCourseHours_colno,Sorted_CoordinatorCourseHours_dict[CourseName][Coordinatorname])
+                Row_number+=1
+
+            Row_number+=2   
+
+    
+        
+
+        newsheet.save("Cordinator Course Hours.xls") 
+
+
+         
+        
 
 
 class Ui_MainWindow(object):
@@ -917,6 +1026,14 @@ class Ui_MainWindow(object):
         FCH.buildFinalCoursesDict()
         FCH.ComputeCourseHours()
 
+        CCH=CoordinatorCourseHours()
+        self.sheet,self.sheet.num_rows=CCH.openSheet(self.filepath)
+        self.IntitializeColumns()
+        CCH.buildCoordinatorCourseHoursDict()
+        CCH.ComputeCourseHours()
+
+        
+
 
       
         
@@ -994,6 +1111,10 @@ class Ui_MainWindow(object):
         FCH= FinalCourseHours()
         FCH.PrintToExcel()
 
+        CCH=CoordinatorCourseHours()
+        CCH.PrintToExcel()
+
+        
 
         
         
