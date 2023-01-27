@@ -22,6 +22,6 @@ Needs python3.8 or above
 
 `pip install xlwt`
 
-
+pyinstaller app.py
 
 Tool Created by: Sai Shiva Hari Prasad
