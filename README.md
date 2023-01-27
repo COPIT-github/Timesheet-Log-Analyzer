@@ -25,3 +25,5 @@ Needs python3.8 or above
 pyinstaller app.py
 
 Tool Created by: Sai Shiva Hari Prasad
+
+Download Executable: https://drive.google.com/file/d/1Y3-7fpn_DsdKh_rdYJ7dnrGNOmq5IjTn/view?usp=share_link
