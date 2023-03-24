@@ -1,0 +1,13 @@
+Proctoring': 377.14999999999986, 
+'Attendance - TAKING': 215.99000000000004, 
+'AV assistance to speaker': 24.0, 
+'Course planning': 27.0, 
+'Training': 32.0, 
+'Lead TA Duties': 36.0, 
+'Other': 41.0, 
+'Attendance - REPORTING': 104.33999999999999, 
+'Answering e-mails': 58.1, 
+'Skills remediation': 27.5, 
+'Blackboard': 76.0,
+'Grading': 138.25, 
+'ExamSoft': 67.5, 'Lab preparation': 56.8, 'Logistics': 41.75, 'Assessment - SKILLS': 2.5, 'Orientation': 4.0, 'Seating chart': 17.0, 'Review sessions': 7.5, 'Lecture': 1.0, 'Tutoring': 6.0, 'Assessment - PATIENT': 59.5, 'Graduate course': 44.0
