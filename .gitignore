@@ -4,3 +4,4 @@ dist
 build
 app.spec
 Excel Sheets
+*.xls
