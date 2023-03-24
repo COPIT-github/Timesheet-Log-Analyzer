@@ -1,5 +1,6 @@
 # Timesheet Log Analyzer
 This Project is built for University of Houston College of Pharmacy.
+https://www.uh.edu/pharmacy/
 
 This tool automates the process of extracting data from the raw TA log sheets that are submitted by over 30 teaching assistants throughout a semester. 
 The tool then generates various metrics that can be used by professors and college stakeholders to gain insights into the performance and workload of the TAs. 
@@ -15,7 +16,7 @@ These metrics includes information such as
 <br>
 By analyzing this data, professors and college stakeholders can identify areas for improvement and optimize the educational experience for students.
 
-https://www.uh.edu/pharmacy/
+
 
  
 Steps to compile the sheet.
