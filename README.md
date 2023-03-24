@@ -52,7 +52,7 @@ Output:
  
 
 Download the app: 
-https://drive.google.com/file/d/1Y3-7fpn_DsdKh_rdYJ7dnrGNOmq5IjTn/view?usp=share_link
+Windows version: [app.zip](https://drive.google.com/file/d/1mRMLqY4XeVuYleD1aAz3luuITUT_4yxH/view?usp=share_link)
 
 
 
