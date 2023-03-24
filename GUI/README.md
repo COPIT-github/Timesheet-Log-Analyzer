@@ -51,8 +51,4 @@ Output:
 
  
 
-Download the app: 
-https://drive.google.com/file/d/1Y3-7fpn_DsdKh_rdYJ7dnrGNOmq5IjTn/view?usp=share_link
-
-
 
