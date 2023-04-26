@@ -1,3 +1,4 @@
+Author:  [esshariprasad](https://github.com/esshariprasad)
 # Timesheet Log Analyzer
 This Project is built for University of Houston College of Pharmacy.
 https://www.uh.edu/pharmacy/
